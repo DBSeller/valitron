@@ -190,7 +190,7 @@ class Validator
     protected function validateEquals($field, $value, array $params)
     {
         // extract the second field value, this accounts for nested array values
-        list($field2Value, $multiple) = $this->getPart($this->_fields, explode('.', $params[0]));
+        [$field2Value, $multiple] = $this->getPart($this->_fields, explode('.', $params[0]));
         return isset($field2Value) && $value == $field2Value;
     }
 
@@ -205,7 +205,7 @@ class Validator
     protected function validateDifferent($field, $value, array $params)
     {
         // extract the second field value, this accounts for nested array values
-        list($field2Value, $multiple) = $this->getPart($this->_fields, explode('.', $params[0]));
+        [$field2Value, $multiple] = $this->getPart($this->_fields, explode('.', $params[0]));
         return isset($field2Value) && $value != $field2Value;
     }
 
@@ -405,7 +405,7 @@ class Validator
             return false;
         }
 
-        list($min, $max) = $params[0];
+        [$min, $max] = $params[0];
 
         return $this->validateMin($field, $value, array($min)) && $this->validateMax($field, $value, array($max));
     }
@@ -660,7 +660,7 @@ class Validator
         }
 
         foreach ($this->validUrlPrefixes as $prefix) {
-            if (strpos($value, $prefix) !== false) {
+            if (strpos($value, (string) $prefix) !== false) {
                 return filter_var($value, \FILTER_VALIDATE_URL) !== false;
             }
         }
@@ -682,7 +682,7 @@ class Validator
         }
 
         foreach ($this->validUrlPrefixes as $prefix) {
-            if (strpos($value, $prefix) !== false) {
+            if (strpos($value, (string) $prefix) !== false) {
                 $host = parse_url(strtolower($value), PHP_URL_HOST);
 
                 return checkdnsrr($host, 'A') || checkdnsrr($host, 'AAAA') || checkdnsrr($host, 'CNAME');
@@ -971,7 +971,7 @@ class Validator
             $emptyFields = 0;
             foreach ($reqParams as $requiredField) {
                 // check the field is set, not null, and not the empty string
-                list($requiredFieldValue, $multiple) = $this->getPart($fields, explode('.', $requiredField));
+                [$requiredFieldValue, $multiple] = $this->getPart($fields, explode('.', $requiredField));
                 if (isset($requiredFieldValue) && (!is_string($requiredFieldValue) || trim($requiredFieldValue) !== '')) {
                     if (!$allRequired) {
                         $conditionallyReq = true;
@@ -1015,7 +1015,7 @@ class Validator
             $filledFields = 0;
             foreach ($reqParams as $requiredField) {
                 // check the field is NOT set, null, or the empty string, in which case we are requiring this value be present
-                list($requiredFieldValue, $multiple) = $this->getPart($fields, explode('.', $requiredField));
+                [$requiredFieldValue, $multiple] = $this->getPart($fields, explode('.', $requiredField));
                 if (!isset($requiredFieldValue) || (is_string($requiredFieldValue) && trim($requiredFieldValue) === '')) {
                     if (!$allEmpty) {
                         $conditionallyReq = true;
@@ -1167,7 +1167,7 @@ class Validator
         if ($identifier === '*') {
             $values = array();
             foreach ($data as $row) {
-                list($value, $multiple) = $this->getPart($row, $identifiers, $allow_empty);
+                [$value, $multiple] = $this->getPart($row, $identifiers, $allow_empty);
                 if ($multiple) {
                     $values = array_merge($values, $value);
                 } else {
@@ -1226,7 +1226,7 @@ class Validator
         $set_to_break = false;
         foreach ($this->_validations as $v) {
             foreach ($v['fields'] as $field) {
-                list($values, $multiple) = $this->getPart($this->_fields, explode('.', $field), false);
+                [$values, $multiple] = $this->getPart($this->_fields, explode('.', $field), false);
 
                 if (! $this->validationMustBeExcecuted($v, $field, $values, $multiple)){
                     continue;
