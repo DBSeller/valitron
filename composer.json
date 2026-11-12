@@ -40,5 +40,6 @@
     },
     "replace": {
         "vlucas/valitron": "self.version"
-    }
+    },
+    "version": "1.4.12"
 }
