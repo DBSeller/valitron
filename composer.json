@@ -14,6 +14,10 @@
             "name": "Vance Lucas",
             "email": "vance@vancelucas.com",
             "homepage": "https://www.vancelucas.com"
+        },
+        {
+            "name": "Gabriel Morgado",
+            "email": "gabriel.morgado@dbseller.com.br"
         }
     ],
     "require": {
